@@ -1,0 +1,13 @@
+name: AreYouTypingPlugin
+version: '1.0-SNAPSHOT'
+main: me.orphey.areyoutypingplugin.AreYouTypingPlugin
+api-version: '1.21'
+depend:
+  - HologramAPI
+commands:
+  areyoutyping:
+    description: "AreYouTyping plugin main command"
+    usage: "/areyoutyping <parameter>"
+    aliases: [ayt]
+    permission: ayt.admin
+    permission-message: "You do not have ayt.admin permission"

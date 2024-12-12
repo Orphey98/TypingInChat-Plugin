@@ -1,0 +1,32 @@
+# AreYouTyping v.1.0 by Orphey98
+# https://github.com/Orphey98
+# Text holograms powered by
+# https://github.com/max1mde/HologramAPI
+config: 1 #do not change
+
+#Show player display names
+show-names: true
+#Indentation style of typing icon
+icon-indentation: true
+#Hologram visibility radius
+view-range: 16
+#Hologram visibility through blocks
+visible-through-blocks: false
+#UNICODE character or text for typing animation
+typing-char: "✎"
+
+#Color customization
+names-color: "#ffffff"
+typing-icon-color: "#ffffff"
+background-color: "#000000"
+#From 0 to 255
+background-transparency: 50
+#Shadow outline of text font
+text-shadow: false
+
+#Changing these values are not recommended
+#Attached hologram spawn location offset, relative to player position.
+#Adjusted for default player model. Custom value may produce flickering.
+location: [0, 0.8, 0]
+#Hologram entity position offset, relative to player position.
+transformation: [0, 0.25F, 0.1F]
