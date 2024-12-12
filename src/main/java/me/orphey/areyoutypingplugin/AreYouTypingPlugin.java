@@ -18,11 +18,11 @@ public final class AreYouTypingPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // VAULT INIT -------------------------------------------------
-        if (!setupEconomy() ) {
-            getLogger().severe("Disabled due to no Vault dependency found!");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
+//        if (!setupEconomy() ) {
+//            getLogger().severe("Disabled due to no Vault dependency found!");
+//            getServer().getPluginManager().disablePlugin(this);
+//            return;
+//        }
         setupPermissions();
         //setupChat();
         // END VAULT INIT
