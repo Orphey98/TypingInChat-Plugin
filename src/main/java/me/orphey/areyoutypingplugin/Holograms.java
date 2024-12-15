@@ -18,6 +18,7 @@ public class Holograms {
 
     public static void create(Player player) {
         Vector offset = Config.getTranslation();
+        int[] background = backgroundColor();
 
         String[] frames = animationFrame(player);
         String name = textBuilder(player);
@@ -27,7 +28,7 @@ public class Holograms {
                 .setBillboard(Display.Billboard.CENTER)
                 .setShadow(Config.isTextShadow())
                 .setViewRange(Config.getViewRange())
-                .setBackgroundColor(Color.fromARGB(Config.getBackgroundTransparency(), color('R'), color('G'), color('B')).asARGB())
+                .setBackgroundColor(Color.fromARGB(background[0], background[1], background[2], background[3]).asARGB())
                 .setTranslation((float)offset.getX(), (float)offset.getY(), (float)offset.getZ());
 
         TextAnimation animation = new TextAnimation()
@@ -65,17 +66,15 @@ public class Holograms {
         strings[3] = typingColor + "[" + typingChar + "...]";
         return strings;
     }
-    // TODO optimization
-    private static int color(char c) {
+
+    private static int[] backgroundColor() {
         String hex = Config.getBackgroundColor().substring(1);
-        if (c == 'R') {
-            return Integer.parseInt(hex.substring(0, 2), 16);
-        } else if (c == 'G') {
-            return Integer.parseInt(hex.substring(2, 4), 16);
-        } else if (c == 'B') {
-            return Integer.parseInt(hex.substring(4, 6), 16);
-        }
-        return 0;
+        int[] array = new int[4];
+        array[0] = Config.getBackgroundTransparency(); //A
+        array[1] = Integer.parseInt(hex.substring(0, 2), 16); //R
+        array[2] = Integer.parseInt(hex.substring(2, 4), 16); //G
+        array[3] = Integer.parseInt(hex.substring(4, 6), 16); //B
+        return array;
     }
 
     public static void remove(Player player) {
