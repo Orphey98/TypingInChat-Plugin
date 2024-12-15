@@ -38,7 +38,7 @@ public class Holograms {
 
         HologramAPI.getHologram().spawn(hologram, player.getLocation().add(Config.getLocation()));
         HologramAPI.getHologram().applyAnimation(hologram, animation);
-        attach(hologram, player);
+        HologramAPI.getHologram().attach(hologram, player.getEntityId());
     }
 
     private static String textBuilder(Player player) {
@@ -78,17 +78,6 @@ public class Holograms {
         return 0;
     }
 
-    public static void attach(TextHologram hologram, Entity entity) {
-        int[] hologramToArray = { hologram.getEntityID() };
-        WrapperPlayServerSetPassengers packet = new WrapperPlayServerSetPassengers(entity.getEntityId(), hologramToArray);
-        HologramAPI.getInstance().getServer().getScheduler().runTask(HologramAPI.getInstance(), () -> sendPacket(packet, hologram));
-    }
-    private static void sendPacket(PacketWrapper<?> packet, TextHologram hologram) {
-        List<Player> list = new ArrayList<>(hologram.getViewers());
-        for (Player player : list) {
-            HologramAPI.getPlayerManager().sendPacket(player, packet);
-        }
-    }
     public static void remove(Player player) {
         TextHologram hologram = HologramAPI.getHologram().getHologramsMap().get(player.getUniqueId().toString());
         if (hologram != null) {
