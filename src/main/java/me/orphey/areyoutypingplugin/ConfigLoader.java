@@ -1,16 +1,19 @@
 package me.orphey.areyoutypingplugin;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
-public class Config {
-    private Config() {
+public class ConfigLoader {
+    private ConfigLoader() {
     }
-    private static final Config instance = new Config();
-    private static YamlConfiguration config;
+    private static final ConfigLoader instance = new ConfigLoader();
+    private static YamlConfiguration config = new YamlConfiguration();
     private static List<Double> location;
     private static List<Float> translation;
     private static boolean showNames;
@@ -68,24 +71,18 @@ public class Config {
         return backgroundTransparency;
     }
 
-    public void load() {
+    public void load() throws InvalidConfigurationException, IOException {
         File file = new File(AreYouTypingPlugin.getInstance().getDataFolder(), "config.yml");
-        if (!file.exists())
-            AreYouTypingPlugin.getInstance().saveResource("config.yml", false);
-        config = new YamlConfiguration();
-        try {
-            config.options().parseComments(true);
-        } catch (Exception e) {
-            //No catch yet
-        }
-        try {
-            config.load(file);
-            loadOptions();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        config.load(file);
+        loadOptions();
     }
     // TODO validate config params
+    // Data types:
+    // boolean
+    // view-range: int from 0 to 20
+    // typing-char: string, max length 16 chars
+    // hex color
+    // background-transparency: int from 0 to 255
     private static void loadOptions() {
         location = config.getDoubleList("location");
         translation = config.getFloatList("transformation");
@@ -101,7 +98,7 @@ public class Config {
         backgroundTransparency = config.getInt("background-transparency");
     }
 
-    public static Config getInstance() {
+    public static ConfigLoader getInstance() {
         return instance;
     }
 }

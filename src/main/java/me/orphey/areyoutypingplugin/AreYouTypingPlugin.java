@@ -2,38 +2,58 @@ package me.orphey.areyoutypingplugin;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.maximde.hologramapi.HologramAPI;
+import com.maximde.hologramapi.hologram.HologramManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
-import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 
 public final class AreYouTypingPlugin extends JavaPlugin {
 
     private final Logger logger = getLogger(); // Create a Logger instance
+    private HologramManager hologramManager;
 
     @Override
     public void onEnable() {
         // VAULT INIT -------------------------------------------------
-//        if (!setupEconomy() ) {
-//            getLogger().severe("Disabled due to no Vault dependency found!");
-//            getServer().getPluginManager().disablePlugin(this);
-//            return;
-//        }
         setupPermissions();
-        //setupChat();
         // END VAULT INIT
+
         // PACKET EVENTS
         PacketEvents.getAPI().getEventManager().registerListener(
                 new PacketEventsListener(), PacketListenerPriority.NORMAL);
         PacketEvents.getAPI().init();
         // END PACKET EVENTS
 
-        getCommand("areyoutyping").setExecutor(new Command());
-        Config.getInstance().load(); // Load data from config.yml
+        // HOLOGRAM API
+        hologramManager = HologramAPI.getManager().orElse(null);
+        if (hologramManager == null) {
+            getLogger().severe("Failed to initialize HologramAPI manager.");
+            return;
+        }
+        // END HOLOGRAM API
+
+        // COMMAND
+        Objects.requireNonNull(getCommand("areyoutyping")).setExecutor(new Command());
+
+        // CONFIGURATION YAML
+        try {
+            ConfigLoader.getInstance().load();
+        } catch (FileNotFoundException e) {
+            getInstance().getPluginLogger().warning("Configuration not found. Creating new file with default values.");
+            getInstance().saveResource("config.yml", false);
+        }
+        catch (IOException | InvalidConfigurationException e) {
+            AreYouTypingPlugin.getInstance().getPluginLogger().severe("config.yml reading error: " + e.getMessage());
+        }
     }
 
     @Override
@@ -48,32 +68,8 @@ public final class AreYouTypingPlugin extends JavaPlugin {
     }
 
     // VAULT INITIALIZATION -----------------------------------------------------------------------------------
-    private static Economy econ = null;
     @SuppressWarnings("FieldCanBeLocal")
-    private static Permission perms = null;
-    @SuppressWarnings("FieldCanBeLocal")
-    private static Chat chat = null;
-    @SuppressWarnings("ConstantValue")
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return econ != null;
-    }
-    public static Economy getEconomy() {
-        return econ;
-    }
-    @SuppressWarnings({"unused", "DataFlowIssue", "ConstantValue"})
-    private boolean setupChat() {
-        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-        chat = rsp.getProvider();
-        return chat != null;
-    }
+    public static Permission perms = null;
     @SuppressWarnings({"DataFlowIssue", "ConstantValue", "UnusedReturnValue"})
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
@@ -81,6 +77,10 @@ public final class AreYouTypingPlugin extends JavaPlugin {
         return perms != null;
     }
     // END OF VAULT INITIALIZATION ------------------------------------------------------------------------------
+
+    public HologramManager getHologramManager() {
+        return hologramManager;
+    }
 
     public static AreYouTypingPlugin getInstance() {
         return getPlugin(AreYouTypingPlugin.class);

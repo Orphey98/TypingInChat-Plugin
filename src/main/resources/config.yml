@@ -27,6 +27,6 @@ text-shadow: false
 #Changing these values are not recommended
 #Attached hologram spawn location offset, relative to player position.
 #Adjusted for default player model. Custom value may produce flickering.
-location: [0, 0.8, 0]
+location: [0, 0.35, 0]
 #Hologram entity position offset, relative to player position.
-transformation: [0, 0.25F, 0.1F]
+transformation: [0, 0.6F, 0.1F]

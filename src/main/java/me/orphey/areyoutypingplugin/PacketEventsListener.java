@@ -25,7 +25,6 @@ public class PacketEventsListener implements PacketListener {
         if (event.getPacketType() == PacketType.Play.Client.PLUGIN_MESSAGE) {
             WrapperPlayClientPluginMessage packet = new WrapperPlayClientPluginMessage(event);
             String channel = packet.getChannelName(); // Get the channel name
-            AreYouTypingPlugin.getInstance().getPluginLogger().fine("Received PAYLOAD packet " + channel);
             // TODO add GUID
             if (channel.equals("aytm:typing_status")) {
                 return packet;
@@ -48,7 +47,7 @@ public class PacketEventsListener implements PacketListener {
 
     private void manageHolo(Player player, byte b) {
         if (b == 1) {
-            if (!HologramAPI.getHologram().getHologramsMap().containsKey(player.getUniqueId().toString())) {
+            if (!Holograms.getHologramAPI().getHologramsMap().containsKey(player.getUniqueId().toString())) {
                 Holograms.create(player);
             }
         } else {
