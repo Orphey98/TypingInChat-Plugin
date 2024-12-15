@@ -1,16 +1,19 @@
 package me.orphey.areyoutypingplugin;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public class ConfigLoader {
     private ConfigLoader() {
     }
     private static final ConfigLoader instance = new ConfigLoader();
-    private static YamlConfiguration config;
+    private static YamlConfiguration config = new YamlConfiguration();
     private static List<Double> location;
     private static List<Float> translation;
     private static boolean showNames;
@@ -68,22 +71,10 @@ public class ConfigLoader {
         return backgroundTransparency;
     }
 
-    public void load() {
+    public void load() throws InvalidConfigurationException, IOException {
         File file = new File(AreYouTypingPlugin.getInstance().getDataFolder(), "config.yml");
-        if (!file.exists())
-            AreYouTypingPlugin.getInstance().saveResource("config.yml", false);
-        config = new YamlConfiguration();
-        try {
-            config.options().parseComments(true);
-        } catch (Exception e) {
-            AreYouTypingPlugin.getInstance().getPluginLogger().severe("Error in AYT config file");
-        }
-        try {
-            config.load(file);
-            loadOptions();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        config.load(file);
+        loadOptions();
     }
     // TODO validate config params
     // Data types:
@@ -93,7 +84,6 @@ public class ConfigLoader {
     // hex color
     // background-transparency: int from 0 to 255
     private static void loadOptions() {
-
         location = config.getDoubleList("location");
         translation = config.getFloatList("transformation");
         showNames = config.getBoolean("show-names");

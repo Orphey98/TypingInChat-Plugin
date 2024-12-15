@@ -47,7 +47,7 @@ public class PacketEventsListener implements PacketListener {
 
     private void manageHolo(Player player, byte b) {
         if (b == 1) {
-            if (!HologramAPI.getHologram().getHologramsMap().containsKey(player.getUniqueId().toString())) {
+            if (!Holograms.getHologramAPI().getHologramsMap().containsKey(player.getUniqueId().toString())) {
                 Holograms.create(player);
             }
         } else {

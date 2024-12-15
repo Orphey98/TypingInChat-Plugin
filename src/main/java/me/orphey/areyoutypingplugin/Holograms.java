@@ -1,6 +1,6 @@
 package me.orphey.areyoutypingplugin;
 
-import com.maximde.hologramapi.HologramAPI;
+import com.maximde.hologramapi.hologram.HologramManager;
 import com.maximde.hologramapi.hologram.TextAnimation;
 import com.maximde.hologramapi.hologram.TextHologram;
 import org.bukkit.Color;
@@ -11,6 +11,9 @@ import org.bukkit.util.Vector;
 public class Holograms {
     private Holograms() {}
 
+    public static HologramManager getHologramAPI() {
+        return AreYouTypingPlugin.getInstance().getHologramManager();
+    }
     public static void create(Player player) {
         Vector offset = ConfigLoader.getTranslation();
         int[] background = backgroundColor();
@@ -32,9 +35,9 @@ public class Holograms {
                 .addFrame( name + frames[3])
                 .setSpeed(20 / 2);
 
-        HologramAPI.getHologram().spawn(hologram, player.getLocation().add(ConfigLoader.getLocation()));
-        HologramAPI.getHologram().applyAnimation(hologram, animation);
-        HologramAPI.getHologram().attach(hologram, player.getEntityId());
+        getHologramAPI().spawn(hologram, player.getLocation().add(ConfigLoader.getLocation()));
+        getHologramAPI().applyAnimation(hologram, animation);
+        getHologramAPI().attach(hologram, player.getEntityId());
     }
 
     private static String textBuilder(Player player) {
@@ -73,10 +76,10 @@ public class Holograms {
     }
 
     public static void remove(Player player) {
-        TextHologram hologram = HologramAPI.getHologram().getHologramsMap().get(player.getUniqueId().toString());
+        TextHologram hologram = getHologramAPI().getHologramsMap().get(player.getUniqueId().toString());
         if (hologram != null) {
-            HologramAPI.getHologram().cancelAnimation(hologram);
-            HologramAPI.getHologram().remove(player.getUniqueId().toString());
+            getHologramAPI().cancelAnimation(hologram);
+            getHologramAPI().remove(player.getUniqueId().toString());
         }
     }
 }
