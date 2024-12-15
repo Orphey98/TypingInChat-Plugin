@@ -1,26 +1,21 @@
 package me.orphey.areyoutypingplugin;
 
-import com.github.retrooper.packetevents.wrapper.PacketWrapper;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
 import com.maximde.hologramapi.HologramAPI;
 import com.maximde.hologramapi.hologram.TextAnimation;
 import com.maximde.hologramapi.hologram.TextHologram;
 import org.bukkit.Color;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Holograms {
+    private Holograms() {}
 
     public static void create(Player player) {
         Vector offset = Config.getTranslation();
         int[] background = backgroundColor();
 
-        String[] frames = animationFrame(player);
+        String[] frames = animationFrame();
         String name = textBuilder(player);
         TextHologram hologram = new TextHologram(player.getUniqueId().toString())
                 .setMiniMessageText(name + frames[0])
@@ -55,8 +50,8 @@ public class Holograms {
         }
         return playerName + indentation;
     }
-    //TODO check StringBuilder
-    private static String[] animationFrame(Player player) {
+
+    private static String[] animationFrame() {
         String[] strings = new String[4];
         String typingChar = Config.getTypingChar();
         String typingColor = "<color:" + Config.getTypingIconColor() + ">";
