@@ -19,8 +19,10 @@ public class Holograms {
     public static void create(Player player) {
         Vector offset = Config.getTranslation();
 
+        String[] frames = animationFrame(player);
+        String name = textBuilder(player);
         TextHologram hologram = new TextHologram(player.getUniqueId().toString())
-                .setMiniMessageText(textBuilder(player) + animationFrame(player)[0])
+                .setMiniMessageText(name + frames[0])
                 .setSeeThroughBlocks(Config.isVisibleThroughBlocks())
                 .setBillboard(Display.Billboard.CENTER)
                 .setShadow(Config.isTextShadow())
@@ -29,9 +31,9 @@ public class Holograms {
                 .setTranslation((float)offset.getX(), (float)offset.getY(), (float)offset.getZ());
 
         TextAnimation animation = new TextAnimation()
-                .addFrame( textBuilder(player) + animationFrame(player)[1])
-                .addFrame( textBuilder(player) + animationFrame(player)[2])
-                .addFrame( textBuilder(player) + animationFrame(player)[3])
+                .addFrame( name + frames[1])
+                .addFrame( name + frames[2])
+                .addFrame( name + frames[3])
                 .setSpeed(20 / 2);
 
         HologramAPI.getHologram().spawn(hologram, player.getLocation().add(Config.getLocation()));
@@ -52,6 +54,7 @@ public class Holograms {
         }
         return playerName + indentation;
     }
+    //TODO check StringBuilder
     private static String[] animationFrame(Player player) {
         String[] strings = new String[4];
         String typingChar = Config.getTypingChar();
@@ -62,6 +65,7 @@ public class Holograms {
         strings[3] = typingColor + "[" + typingChar + "...]";
         return strings;
     }
+    // TODO optimization
     private static int color(char c) {
         String hex = Config.getBackgroundColor().substring(1);
         if (c == 'R') {
