@@ -2,8 +2,8 @@ name: AreYouTyping
 version: '1.0'
 main: me.orphey.areyoutypingplugin.AreYouTypingPlugin
 api-version: '1.19'
-depend:
-  - HologramAPI
+depend: [HologramAPI, packetevents]
+softdepend: [VaultAPI]
 commands:
   areyoutyping:
     description: "AreYouTyping plugin main command"
