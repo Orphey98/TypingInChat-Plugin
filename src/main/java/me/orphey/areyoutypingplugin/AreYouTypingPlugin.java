@@ -43,7 +43,7 @@ public final class AreYouTypingPlugin extends JavaPlugin {
 
     // VAULT INITIALIZATION -----------------------------------------------------------------------------------
     @SuppressWarnings("FieldCanBeLocal")
-    private static Permission perms = null;
+    public static Permission perms = null;
     @SuppressWarnings({"DataFlowIssue", "ConstantValue", "UnusedReturnValue"})
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);

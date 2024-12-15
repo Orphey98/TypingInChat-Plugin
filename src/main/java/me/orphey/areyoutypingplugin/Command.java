@@ -15,7 +15,7 @@ public class Command implements CommandExecutor, TabExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
 
         if (strings.length == 1 && strings[0].equalsIgnoreCase("reload")) {
-            cmdReload((Player) commandSender);
+            cmdReload(commandSender);
         } else {
             return false;
         }
@@ -29,8 +29,17 @@ public class Command implements CommandExecutor, TabExecutor {
         return new ArrayList<>();
     }
 
-    public static void cmdReload(Player player) {
-        Config.getInstance().load(); // Update data from config.yml
-        player.sendMessage("AreYouTyping Config reloaded");
+    public static void cmdReload(CommandSender sender) {
+        if (sender instanceof Player player) {
+            if (AreYouTypingPlugin.perms.has(player, "ayt.admin")) {
+                Config.getInstance().load(); // Update data from config.yml
+                sender.sendMessage("AreYouTyping Config reloaded");
+            } else {
+                sender.sendMessage("You do not have ayt.admin permission");
+            }
+        } else {
+            Config.getInstance().load();
+            AreYouTypingPlugin.getInstance().getPluginLogger().info("Configuration reloaded");
+        }
     }
 }
