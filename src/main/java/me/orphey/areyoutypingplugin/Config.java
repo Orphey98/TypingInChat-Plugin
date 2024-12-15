@@ -85,7 +85,7 @@ public class Config {
             ex.printStackTrace();
         }
     }
-
+    // TODO validate config params
     private static void loadOptions() {
         location = config.getDoubleList("location");
         translation = config.getFloatList("transformation");
