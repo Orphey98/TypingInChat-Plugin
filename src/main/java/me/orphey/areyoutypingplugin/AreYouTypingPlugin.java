@@ -3,8 +3,6 @@ package me.orphey.areyoutypingplugin;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
-import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,7 +25,7 @@ public final class AreYouTypingPlugin extends JavaPlugin {
         // END PACKET EVENTS
 
         getCommand("areyoutyping").setExecutor(new Command());
-        Config.getInstance().load(); // Load data from config.yml
+        ConfigLoader.getInstance().load(); // Load data from config.yml
     }
 
     @Override

@@ -12,17 +12,17 @@ public class Holograms {
     private Holograms() {}
 
     public static void create(Player player) {
-        Vector offset = Config.getTranslation();
+        Vector offset = ConfigLoader.getTranslation();
         int[] background = backgroundColor();
 
         String[] frames = animationFrame();
         String name = textBuilder(player);
         TextHologram hologram = new TextHologram(player.getUniqueId().toString())
                 .setMiniMessageText(name + frames[0])
-                .setSeeThroughBlocks(Config.isVisibleThroughBlocks())
+                .setSeeThroughBlocks(ConfigLoader.isVisibleThroughBlocks())
                 .setBillboard(Display.Billboard.CENTER)
-                .setShadow(Config.isTextShadow())
-                .setViewRange(Config.getViewRange())
+                .setShadow(ConfigLoader.isTextShadow())
+                .setViewRange(ConfigLoader.getViewRange())
                 .setBackgroundColor(Color.fromARGB(background[0], background[1], background[2], background[3]).asARGB())
                 .setTranslation((float)offset.getX(), (float)offset.getY(), (float)offset.getZ());
 
@@ -32,7 +32,7 @@ public class Holograms {
                 .addFrame( name + frames[3])
                 .setSpeed(20 / 2);
 
-        HologramAPI.getHologram().spawn(hologram, player.getLocation().add(Config.getLocation()));
+        HologramAPI.getHologram().spawn(hologram, player.getLocation().add(ConfigLoader.getLocation()));
         HologramAPI.getHologram().applyAnimation(hologram, animation);
         HologramAPI.getHologram().attach(hologram, player.getEntityId());
     }
@@ -40,9 +40,9 @@ public class Holograms {
     private static String textBuilder(Player player) {
         String playerName = "";
         String indentation = "";
-        if (Config.isShowNames()) {
-            playerName = "<color:" + Config.getNamesColor() + ">" + player.getName();
-            if (Config.isIndentation()) {
+        if (ConfigLoader.isShowNames()) {
+            playerName = "<color:" + ConfigLoader.getNamesColor() + ">" + player.getName();
+            if (ConfigLoader.isIndentation()) {
                 indentation = "\n";
             } else {
                 playerName += " ";
@@ -53,8 +53,8 @@ public class Holograms {
 
     private static String[] animationFrame() {
         String[] strings = new String[4];
-        String typingChar = Config.getTypingChar();
-        String typingColor = "<color:" + Config.getTypingIconColor() + ">";
+        String typingChar = ConfigLoader.getTypingChar();
+        String typingColor = "<color:" + ConfigLoader.getTypingIconColor() + ">";
         strings[0] = typingColor + "[" + typingChar + "]";
         strings[1] = typingColor + "[" + typingChar + ".]";
         strings[2] = typingColor + "[" + typingChar + "..]";
@@ -63,9 +63,9 @@ public class Holograms {
     }
 
     private static int[] backgroundColor() {
-        String hex = Config.getBackgroundColor().substring(1);
+        String hex = ConfigLoader.getBackgroundColor().substring(1);
         int[] array = new int[4];
-        array[0] = Config.getBackgroundTransparency(); //A
+        array[0] = ConfigLoader.getBackgroundTransparency(); //A
         array[1] = Integer.parseInt(hex.substring(0, 2), 16); //R
         array[2] = Integer.parseInt(hex.substring(2, 4), 16); //G
         array[3] = Integer.parseInt(hex.substring(4, 6), 16); //B

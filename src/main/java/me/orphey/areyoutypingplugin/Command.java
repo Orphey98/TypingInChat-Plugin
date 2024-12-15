@@ -32,13 +32,13 @@ public class Command implements CommandExecutor, TabExecutor {
     public static void cmdReload(CommandSender sender) {
         if (sender instanceof Player player) {
             if (AreYouTypingPlugin.perms.has(player, "ayt.admin")) {
-                Config.getInstance().load(); // Update data from config.yml
+                ConfigLoader.getInstance().load(); // Update data from config.yml
                 sender.sendMessage("AreYouTyping Config reloaded");
             } else {
                 sender.sendMessage("You do not have ayt.admin permission");
             }
         } else {
-            Config.getInstance().load();
+            ConfigLoader.getInstance().load();
             AreYouTypingPlugin.getInstance().getPluginLogger().info("Configuration reloaded");
         }
     }

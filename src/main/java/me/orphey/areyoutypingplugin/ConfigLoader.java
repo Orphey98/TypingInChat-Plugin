@@ -6,10 +6,10 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.util.List;
 
-public class Config {
-    private Config() {
+public class ConfigLoader {
+    private ConfigLoader() {
     }
-    private static final Config instance = new Config();
+    private static final ConfigLoader instance = new ConfigLoader();
     private static YamlConfiguration config;
     private static List<Double> location;
     private static List<Float> translation;
@@ -76,7 +76,7 @@ public class Config {
         try {
             config.options().parseComments(true);
         } catch (Exception e) {
-            //No catch yet
+            AreYouTypingPlugin.getInstance().getPluginLogger().severe("Error in AYT config file");
         }
         try {
             config.load(file);
@@ -86,7 +86,14 @@ public class Config {
         }
     }
     // TODO validate config params
+    // Data types:
+    // boolean
+    // view-range: int from 0 to 20
+    // typing-char: string, max length 16 chars
+    // hex color
+    // background-transparency: int from 0 to 255
     private static void loadOptions() {
+
         location = config.getDoubleList("location");
         translation = config.getFloatList("transformation");
         showNames = config.getBoolean("show-names");
@@ -101,7 +108,7 @@ public class Config {
         backgroundTransparency = config.getInt("background-transparency");
     }
 
-    public static Config getInstance() {
+    public static ConfigLoader getInstance() {
         return instance;
     }
 }
