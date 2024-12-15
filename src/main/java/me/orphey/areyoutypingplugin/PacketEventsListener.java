@@ -25,7 +25,6 @@ public class PacketEventsListener implements PacketListener {
         if (event.getPacketType() == PacketType.Play.Client.PLUGIN_MESSAGE) {
             WrapperPlayClientPluginMessage packet = new WrapperPlayClientPluginMessage(event);
             String channel = packet.getChannelName(); // Get the channel name
-            AreYouTypingPlugin.getInstance().getPluginLogger().fine("Received PAYLOAD packet " + channel);
             // TODO add GUID
             if (channel.equals("aytm:typing_status")) {
                 return packet;
