@@ -25,12 +25,14 @@ public class ConfigLoader {
             entry("visible-through-blocks", false),
             entry("text-shadow", false)
     ));
+    private static final Map<String, Integer> intParameters = new HashMap<>(Map.ofEntries(
+            entry("view-range", 16),
+            entry("background-transparency", 50)
+    ));
     private static List<Double> location;
     private static List<Float> translation;
-    private static int viewRange;
     private static String typingChar;
     private static String backgroundColor;
-    private static int backgroundTransparency;
     private static String namesColor;
     private static String typingIconColor;
 
@@ -53,7 +55,7 @@ public class ConfigLoader {
         return booleanParameters.get("icon-indentation");
     }
     public static int getViewRange() {
-        return viewRange;
+        return intParameters.get("view-range");
     }
     public static boolean isVisibleThroughBlocks() {
         return booleanParameters.get("visible-through-blocks");
@@ -74,7 +76,7 @@ public class ConfigLoader {
         return backgroundColor;
     }
     public static int getBackgroundTransparency() {
-        return backgroundTransparency;
+        return intParameters.get("background-transparency");
     }
 
     public void load() throws InvalidConfigurationException, IOException {
@@ -101,16 +103,34 @@ public class ConfigLoader {
         }
     }
 
+    private static void validateRange(String parameter, int min, int max) {
+        if (config.isInt(parameter)) {
+            int value = config.getInt(parameter);
+            if (value >= min && value <= max) {
+                intParameters.put(parameter, value);
+            } else if (value > max) {
+                intParameters.put(parameter, max);
+                logger.warning(String.format("Value for %s parameter is too big. Using max value (%d).", parameter, max));
+            } else {
+                intParameters.put(parameter, min);
+                logger.warning(String.format("Value for %s parameter is too small. Using min value (%d).", parameter, min));
+            }
+        } else {
+            logger.warning(String.format("Can't load %s parameter from config. Using default value (%d).", parameter, intParameters.get(parameter)));
+        }
+    }
+
     private static void loadOptions() {
         validateBoolean();
+        validateRange("view-range", 1, 20);
+        validateRange("background-transparency", 0, 255);
+
         location = config.getDoubleList("location");
         translation = config.getFloatList("transformation");
-
         typingChar = config.getString("typing-char");
         namesColor = config.getString("names-color");
         typingIconColor = config.getString("typing-icon-color");
         backgroundColor = config.getString("background-color");
-        backgroundTransparency = config.getInt("background-transparency");
     }
 
     private static final Logger logger = AreYouTypingPlugin.getInstance().getPluginLogger();
