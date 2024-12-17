@@ -41,8 +41,7 @@ public class Command implements CommandExecutor, TabExecutor {
                     sender.sendMessage(ChatColor.YELLOW + "[AreYouTyping] Configuration reloaded");
                     AreYouTypingPlugin.getInstance().getPluginLogger().info("Configuration reloaded.");
                 } catch (FileNotFoundException e) {
-                    AreYouTypingPlugin.getInstance().getPluginLogger().warning("Configuration not found. Creating new file with default values.");
-                    AreYouTypingPlugin.getInstance().saveResource("config.yml", false);
+                    ConfigLoader.createConfig();
                 }
                 catch (IOException | InvalidConfigurationException e) {
                     sender.sendMessage(ChatColor.RED + "Error while AreYouTyping Config reloading. Check console.");

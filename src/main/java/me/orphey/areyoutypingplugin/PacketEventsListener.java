@@ -4,7 +4,6 @@ import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
-import com.maximde.hologramapi.HologramAPI;
 import org.bukkit.entity.Player;
 
 public class PacketEventsListener implements PacketListener {
@@ -25,7 +24,6 @@ public class PacketEventsListener implements PacketListener {
         if (event.getPacketType() == PacketType.Play.Client.PLUGIN_MESSAGE) {
             WrapperPlayClientPluginMessage packet = new WrapperPlayClientPluginMessage(event);
             String channel = packet.getChannelName(); // Get the channel name
-            // TODO add GUID
             if (channel.equals("aytm:typing_status")) {
                 return packet;
             } else {
