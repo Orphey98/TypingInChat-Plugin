@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 import static java.util.Map.entry;
 
 public class ConfigLoader {
-    // TODO create enum with parameter names and logger messages
 
     private ConfigLoader() {
     }
@@ -93,14 +92,13 @@ public class ConfigLoader {
         }
     }
 
-    // TODO validate config params
     // Data types:
-    // boolean
-    // ranged int
-    // double list
-    // float list
-    // typing-char: string, max length 16 chars
-    // hex color
+    // // boolean
+    // // ranged int
+    // // double list
+    // // float list
+    // // typing-char: string, max length 12 chars
+    // // hex color
 
     public static void createConfig() {
         AreYouTypingPlugin.getInstance().getPluginLogger().warning("Configuration not found. Creating new file with default values.");
