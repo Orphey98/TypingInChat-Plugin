@@ -14,6 +14,9 @@ public class PacketEventsListener implements PacketListener {
         if (player == null || !player.isOnline()) {
             return;
         }
+        if (!AreYouTypingPlugin.perms.has(player, "ayt.display")) {
+            return;
+        }
         WrapperPlayClientPluginMessage packet = verifyPacket(event);
         if (packet != null) {
             manageHolo(player, readPacket(packet));

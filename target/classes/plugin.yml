@@ -11,3 +11,11 @@ commands:
     aliases: [ayt]
     permission: ayt.admin
     permission-message: "You do not have ayt.admin permission"
+permissions:
+  ayt.admin:
+    description: "Access to </ayt reload> command"
+    default: op
+  ayt.display:
+    description: "Show chat typing hologram for the player"
+    default: not op
+

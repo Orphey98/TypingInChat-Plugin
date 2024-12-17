@@ -6,6 +6,7 @@ import com.maximde.hologramapi.HologramAPI;
 import com.maximde.hologramapi.hologram.HologramManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,7 +25,10 @@ public final class AreYouTypingPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // VAULT INIT -------------------------------------------------
-        setupPermissions();
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+            setupPermissions();
+            logger.info("VaultAPI detected. Use permission ayt.display to control holograms spawn.");
+        }
         // END VAULT INIT
 
         // PACKET EVENTS
