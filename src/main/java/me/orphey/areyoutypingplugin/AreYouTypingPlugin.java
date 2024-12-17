@@ -48,8 +48,7 @@ public final class AreYouTypingPlugin extends JavaPlugin {
         try {
             ConfigLoader.getInstance().load();
         } catch (FileNotFoundException e) {
-            getInstance().getPluginLogger().warning("Configuration not found. Creating new file with default values.");
-            getInstance().saveResource("config.yml", false);
+            ConfigLoader.createConfig();
         }
         catch (IOException | InvalidConfigurationException e) {
             AreYouTypingPlugin.getInstance().getPluginLogger().severe("config.yml reading error: " + e.getMessage());

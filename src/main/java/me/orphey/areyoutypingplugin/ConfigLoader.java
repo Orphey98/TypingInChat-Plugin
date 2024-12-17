@@ -82,6 +82,10 @@ public class ConfigLoader {
 
     public void load() throws InvalidConfigurationException, IOException {
         File file = new File(AreYouTypingPlugin.getInstance().getDataFolder(), "config.yml");
+        if (!file.exists()) {
+            createConfig();
+            return;
+        }
         try {
             config.load(file);
         } finally {
@@ -97,6 +101,11 @@ public class ConfigLoader {
     // float list
     // typing-char: string, max length 16 chars
     // hex color
+
+    public static void createConfig() {
+        AreYouTypingPlugin.getInstance().getPluginLogger().warning("Configuration not found. Creating new file with default values.");
+        AreYouTypingPlugin.getInstance().saveResource("config.yml", false);
+    }
 
     private static void validateBoolean() {
         for (String parameter : booleanParameters.keySet()) {
