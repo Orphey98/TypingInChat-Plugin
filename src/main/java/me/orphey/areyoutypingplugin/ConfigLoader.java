@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Map.entry;
 
@@ -30,10 +32,10 @@ public class ConfigLoader {
     ));
     private static final List<Double> location = new ArrayList<>(List.of(0.0, 0.35, 0.0));
     private static final List<Float> translation = new ArrayList<>(List.of(0F, 0.6F, 0.1F));
-    private static String typingChar;
-    private static String backgroundColor;
-    private static String namesColor;
-    private static String typingIconColor;
+    private static String typingChar = "✎";
+    private static String backgroundColor = "#000000";
+    private static String namesColor = "#ffffff";
+    private static String typingIconColor = "#ffffff";
 
     public static Vector getLocation() {
         double x = location.get(0);
@@ -147,6 +149,39 @@ public class ConfigLoader {
             logger.warning(String.format("Bad values in %s parameter. Using last saved or default values.", parameter));
         }
     }
+    private static String validateString(String parameter, String string, int max) {
+        if (config.isString(parameter)) {
+            String stringTemp = config.getString(parameter);
+            assert stringTemp != null;
+            if (stringTemp.length() >= max) {
+                logger.warning(String.format("Value for %s parameter is too big. Size limit is %d chars.", parameter, max));
+                return stringTemp.substring(0, max);
+            } else {
+                return stringTemp;
+            }
+        } else {
+            logger.warning(String.format("Bad values in %s parameter. Using last saved or default values.", parameter));
+            return string;
+        }
+    }
+    private static String validateHexColor(String parameter, String string) {
+        if (config.isString(parameter)) {
+            String stringTemp = config.getString(parameter);
+            String regex = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+            Pattern pattern = Pattern.compile(regex);
+            assert stringTemp != null;
+            Matcher matcher = pattern.matcher(stringTemp);
+            if (matcher.matches()) {
+                return stringTemp;
+            } else {
+                logger.warning(String.format("Bad values in %s parameter. Using last saved or default values.", parameter));
+                return string;
+            }
+        } else {
+            logger.warning(String.format("Bad values in %s parameter. Using last saved or default values.", parameter));
+            return string;
+        }
+    }
 
     private static void loadOptions() {
         validateBoolean();
@@ -154,10 +189,10 @@ public class ConfigLoader {
         validateRange("background-transparency", 0, 255);
         validateDoubleList("location", location);
         validateFloatList("transformation", translation);
-        typingChar = config.getString("typing-char");
-        namesColor = config.getString("names-color");
-        typingIconColor = config.getString("typing-icon-color");
-        backgroundColor = config.getString("background-color");
+        typingChar = validateString("typing-char", typingChar, 12);
+        namesColor = validateHexColor("names-color", namesColor);
+        typingIconColor = validateHexColor("typing-icon-color", typingIconColor);
+        backgroundColor = validateHexColor("background-color", backgroundColor);
     }
 
     private static final Logger logger = AreYouTypingPlugin.getInstance().getPluginLogger();
