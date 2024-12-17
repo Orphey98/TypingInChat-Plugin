@@ -35,7 +35,7 @@ public class Command implements CommandExecutor, TabExecutor {
 
     public static void cmdReload(CommandSender sender) {
         if (sender instanceof Player player) {
-            if (AreYouTypingPlugin.perms.has(player, "ayt.admin")) {
+            if (AreYouTypingPlugin.checkPermission(player, "ayt.admin")) {
                 try {
                     ConfigLoader.getInstance().load(); // Update data from config.yml
                     sender.sendMessage(ChatColor.YELLOW + "[AreYouTyping] Configuration reloaded");
