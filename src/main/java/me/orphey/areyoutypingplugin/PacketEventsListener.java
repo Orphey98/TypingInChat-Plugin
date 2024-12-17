@@ -14,7 +14,10 @@ public class PacketEventsListener implements PacketListener {
         if (player == null || !player.isOnline()) {
             return;
         }
-        if (!AreYouTypingPlugin.perms.has(player, "ayt.display")) {
+        if (!AreYouTypingPlugin.checkPermission(player, "ayt.display")) {
+            if (Holograms.getHologramAPI().getHologramsMap().containsKey(player.getUniqueId().toString())) {
+                Holograms.remove(player);
+            }
             return;
         }
         WrapperPlayClientPluginMessage packet = verifyPacket(event);

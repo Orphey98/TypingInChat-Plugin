@@ -8,6 +8,7 @@ import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,13 +22,15 @@ public final class AreYouTypingPlugin extends JavaPlugin {
 
     private final Logger logger = getLogger(); // Create a Logger instance
     private HologramManager hologramManager;
+    private static boolean vaultInit = false;
 
     @Override
     public void onEnable() {
         // VAULT INIT -------------------------------------------------
         if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
             setupPermissions();
-            logger.info("VaultAPI detected. Use permission ayt.display to control holograms spawn.");
+            logger.info("VaultAPI hooked. Use ayt.display permission to control holograms spawn.");
+            vaultInit = true;
         }
         // END VAULT INIT
 
@@ -83,6 +86,14 @@ public final class AreYouTypingPlugin extends JavaPlugin {
 
     public HologramManager getHologramManager() {
         return hologramManager;
+    }
+
+    public static boolean checkPermission(Player player, String node) {
+        if (vaultInit) {
+            return AreYouTypingPlugin.perms.has(player, node);
+        } else {
+            return player.hasPermission(node);
+        }
     }
 
     public static AreYouTypingPlugin getInstance() {

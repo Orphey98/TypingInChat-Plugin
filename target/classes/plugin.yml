@@ -17,5 +17,5 @@ permissions:
     default: op
   ayt.display:
     description: "Show chat typing hologram for the player"
-    default: not op
+    default: true
 
