@@ -30,7 +30,7 @@ public class PacketEventsListener implements PacketListener {
         if (event.getPacketType() == PacketType.Play.Client.PLUGIN_MESSAGE) {
             WrapperPlayClientPluginMessage packet = new WrapperPlayClientPluginMessage(event);
             String channel = packet.getChannelName(); // Get the channel name
-            if (channel.equals("ticm67896:typing_status")) {
+            if (channel.equals("typinginchatmod:typing_status")) {
                 return packet;
             } else {
                 return null;
