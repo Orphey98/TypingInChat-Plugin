@@ -1,4 +1,4 @@
-package me.orphey.areyoutypingplugin;
+package me.orphey.typinginchat;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 
-public final class AreYouTypingPlugin extends JavaPlugin {
+public final class TypingInChat extends JavaPlugin {
 
     private final Logger logger = getLogger(); // Create a Logger instance
     private HologramManager hologramManager;
@@ -49,7 +49,7 @@ public final class AreYouTypingPlugin extends JavaPlugin {
         // END HOLOGRAM API
 
         // COMMAND
-        Objects.requireNonNull(getCommand("areyoutyping")).setExecutor(new Command());
+        Objects.requireNonNull(getCommand("typinginchat")).setExecutor(new Command());
 
         // CONFIGURATION YAML
         try {
@@ -58,7 +58,7 @@ public final class AreYouTypingPlugin extends JavaPlugin {
             ConfigLoader.createConfig();
         }
         catch (IOException | InvalidConfigurationException e) {
-            AreYouTypingPlugin.getInstance().getPluginLogger().severe("config.yml reading error: " + e.getMessage());
+            TypingInChat.getInstance().getPluginLogger().severe("config.yml reading error: " + e.getMessage());
         }
     }
 
@@ -90,14 +90,14 @@ public final class AreYouTypingPlugin extends JavaPlugin {
 
     public static boolean checkPermission(Player player, String node) {
         if (vaultInit) {
-            return AreYouTypingPlugin.perms.has(player, node);
+            return TypingInChat.perms.has(player, node);
         } else {
             return player.hasPermission(node);
         }
     }
 
-    public static AreYouTypingPlugin getInstance() {
-        return getPlugin(AreYouTypingPlugin.class);
+    public static TypingInChat getInstance() {
+        return getPlugin(TypingInChat.class);
     }
     public Logger getPluginLogger() {
         return logger;

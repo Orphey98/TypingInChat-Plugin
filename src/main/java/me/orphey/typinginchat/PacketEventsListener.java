@@ -1,4 +1,4 @@
-package me.orphey.areyoutypingplugin;
+package me.orphey.typinginchat;
 
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -14,7 +14,7 @@ public class PacketEventsListener implements PacketListener {
         if (player == null || !player.isOnline()) {
             return;
         }
-        if (!AreYouTypingPlugin.checkPermission(player, "ayt.display")) {
+        if (!TypingInChat.checkPermission(player, "tic.display")) {
             if (Holograms.getHologramAPI().getHologramsMap().containsKey(player.getUniqueId().toString())) {
                 Holograms.remove(player);
             }
@@ -30,7 +30,7 @@ public class PacketEventsListener implements PacketListener {
         if (event.getPacketType() == PacketType.Play.Client.PLUGIN_MESSAGE) {
             WrapperPlayClientPluginMessage packet = new WrapperPlayClientPluginMessage(event);
             String channel = packet.getChannelName(); // Get the channel name
-            if (channel.equals("aytm:typing_status")) {
+            if (channel.equals("typinginchatmod:typing_status")) {
                 return packet;
             } else {
                 return null;

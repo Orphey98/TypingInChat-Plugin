@@ -1,4 +1,4 @@
-package me.orphey.areyoutypingplugin;
+package me.orphey.typinginchat;
 
 import com.maximde.hologramapi.hologram.HologramManager;
 import com.maximde.hologramapi.hologram.TextAnimation;
@@ -12,7 +12,7 @@ public class Holograms {
     private Holograms() {}
 
     public static HologramManager getHologramAPI() {
-        return AreYouTypingPlugin.getInstance().getHologramManager();
+        return TypingInChat.getInstance().getHologramManager();
     }
     public static void create(Player player) {
         Vector offset = ConfigLoader.getTranslation();

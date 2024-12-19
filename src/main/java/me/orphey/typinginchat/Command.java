@@ -1,4 +1,4 @@
-package me.orphey.areyoutypingplugin;
+package me.orphey.typinginchat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
@@ -35,28 +35,28 @@ public class Command implements CommandExecutor, TabExecutor {
 
     public static void cmdReload(CommandSender sender) {
         if (sender instanceof Player player) {
-            if (AreYouTypingPlugin.checkPermission(player, "ayt.admin")) {
+            if (TypingInChat.checkPermission(player, "tic.admin")) {
                 try {
                     ConfigLoader.getInstance().load(); // Update data from config.yml
-                    sender.sendMessage(ChatColor.YELLOW + "[AreYouTyping] Configuration reloaded");
-                    AreYouTypingPlugin.getInstance().getPluginLogger().info("Configuration reloaded.");
+                    sender.sendMessage(ChatColor.YELLOW + "[TypingInChat] Configuration reloaded");
+                    TypingInChat.getInstance().getPluginLogger().info("Configuration reloaded.");
                 } catch (FileNotFoundException e) {
                     ConfigLoader.createConfig();
                 }
                 catch (IOException | InvalidConfigurationException e) {
-                    sender.sendMessage(ChatColor.RED + "Error while AreYouTyping Config reloading. Check console.");
-                    AreYouTypingPlugin.getInstance().getPluginLogger().severe("config.yml reading error: " + e.getMessage());
+                    sender.sendMessage(ChatColor.RED + "Error while TypingInChat Config reloading. Check console.");
+                    TypingInChat.getInstance().getPluginLogger().severe("config.yml reading error: " + e.getMessage());
                 }
             } else {
-                sender.sendMessage("You do not have ayt.admin permission");
-                AreYouTypingPlugin.getInstance().getPluginLogger().warning("Not enough permission for command.");
+                sender.sendMessage("You do not have tic.admin permission");
+                TypingInChat.getInstance().getPluginLogger().warning("Not enough permission for command.");
             }
         } else {
             try {
                 ConfigLoader.getInstance().load();
-                AreYouTypingPlugin.getInstance().getPluginLogger().info("Configuration reloaded");
+                TypingInChat.getInstance().getPluginLogger().info("Configuration reloaded");
             } catch (IOException | InvalidConfigurationException e) {
-                AreYouTypingPlugin.getInstance().getPluginLogger().severe("config.yml reading error." + e.getMessage());
+                TypingInChat.getInstance().getPluginLogger().severe("config.yml reading error." + e.getMessage());
             }
         }
     }

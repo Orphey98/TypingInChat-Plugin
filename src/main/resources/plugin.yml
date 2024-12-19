@@ -1,21 +1,21 @@
-name: AreYouTyping
+name: TypingInChat
 version: '1.0'
-main: me.orphey.areyoutypingplugin.AreYouTypingPlugin
+main: me.orphey.typinginchat.TypingInChat
 api-version: '1.19'
 depend: [HologramAPI, packetevents]
 softdepend: [VaultAPI]
 commands:
-  areyoutyping:
-    description: "AreYouTyping plugin main command"
-    usage: "/areyoutyping <parameter>"
-    aliases: [ayt]
-    permission: ayt.admin
-    permission-message: "You do not have ayt.admin permission"
+  typinginchat:
+    description: "TypingInChat plugin main command"
+    usage: "/typinginchat reload"
+    aliases: [tic]
+    permission: tic.admin
+    permission-message: "You do not have tic.admin permission"
 permissions:
-  ayt.admin:
-    description: "Access to </ayt reload> command"
+  tic.admin:
+    description: "Access to </tic reload> command"
     default: op
-  ayt.display:
+  tic.display:
     description: "Show chat typing hologram for the player"
     default: true
 
