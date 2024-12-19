@@ -1,4 +1,4 @@
-package me.orphey.areyoutypingplugin;
+package me.orphey.typinginchat;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -80,7 +80,7 @@ public class ConfigLoader {
     }
 
     public void load() throws InvalidConfigurationException, IOException {
-        File file = new File(AreYouTypingPlugin.getInstance().getDataFolder(), "config.yml");
+        File file = new File(TypingInChat.getInstance().getDataFolder(), "config.yml");
         if (!file.exists()) {
             createConfig();
             return;
@@ -101,8 +101,8 @@ public class ConfigLoader {
     // // hex color
 
     public static void createConfig() {
-        AreYouTypingPlugin.getInstance().getPluginLogger().warning("Configuration not found. Creating new file with default values.");
-        AreYouTypingPlugin.getInstance().saveResource("config.yml", false);
+        TypingInChat.getInstance().getPluginLogger().warning("Configuration not found. Creating new file with default values.");
+        TypingInChat.getInstance().saveResource("config.yml", false);
     }
 
     private static void validateBoolean() {
@@ -202,7 +202,7 @@ public class ConfigLoader {
         backgroundColor = validateHexColor("background-color", backgroundColor);
     }
 
-    private static final Logger logger = AreYouTypingPlugin.getInstance().getPluginLogger();
+    private static final Logger logger = TypingInChat.getInstance().getPluginLogger();
     public static ConfigLoader getInstance() {
         return instance;
     }
