@@ -1,8 +1,8 @@
 package me.orphey.typinginchat;
 
-import com.maximde.hologramapi.hologram.HologramManager;
-import com.maximde.hologramapi.hologram.TextAnimation;
-import com.maximde.hologramapi.hologram.TextHologram;
+import com.maximde.hologramlib.hologram.HologramManager;
+import com.maximde.hologramlib.hologram.TextHologram;
+import com.maximde.hologramlib.hologram.TextAnimation;
 import org.bukkit.Color;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
@@ -76,7 +76,7 @@ public class Holograms {
     }
 
     public static void remove(Player player) {
-        TextHologram hologram = getHologramAPI().getHologramsMap().get(player.getUniqueId().toString());
+        TextHologram hologram = (TextHologram) getHologramAPI().getHologramsMap().get(player.getUniqueId().toString());
         if (hologram != null) {
             getHologramAPI().cancelAnimation(hologram);
             getHologramAPI().remove(player.getUniqueId().toString());

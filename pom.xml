@@ -90,8 +90,8 @@
         </dependency>
         <dependency>
             <groupId>com.github.max1mde</groupId>
-            <artifactId>HologramAPI</artifactId>
-            <version>1.4.7</version>
+            <artifactId>HologramLib</artifactId>
+            <version>1.6.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

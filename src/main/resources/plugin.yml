@@ -2,7 +2,7 @@ name: TypingInChat
 version: '1.0'
 main: me.orphey.typinginchat.TypingInChat
 api-version: '1.19'
-depend: [HologramAPI, packetevents]
+depend: [HologramLib, packetevents]
 softdepend: [VaultAPI]
 commands:
   typinginchat:
