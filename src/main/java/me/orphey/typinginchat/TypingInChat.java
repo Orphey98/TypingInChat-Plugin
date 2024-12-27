@@ -2,8 +2,8 @@ package me.orphey.typinginchat;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import com.maximde.hologramapi.HologramAPI;
-import com.maximde.hologramapi.hologram.HologramManager;
+import com.maximde.hologramlib.HologramLib;
+import com.maximde.hologramlib.hologram.HologramManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -41,7 +41,7 @@ public final class TypingInChat extends JavaPlugin {
         // END PACKET EVENTS
 
         // HOLOGRAM API
-        hologramManager = HologramAPI.getManager().orElse(null);
+        hologramManager = HologramLib.getManager().orElse(null);
         if (hologramManager == null) {
             getLogger().severe("Failed to initialize HologramAPI manager.");
             return;
