@@ -6,8 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,7 +14,7 @@ import java.util.List;
 
 public class Command implements CommandExecutor, TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
 
         if (strings.length == 1 && strings[0].equalsIgnoreCase("reload")) {
             cmdReload(commandSender);
@@ -27,7 +25,7 @@ public class Command implements CommandExecutor, TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
+    public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
         if (strings.length == 1)
             return List.of("reload");
         return new ArrayList<>();
@@ -38,6 +36,7 @@ public class Command implements CommandExecutor, TabExecutor {
             if (TypingInChat.checkPermission(player, "tic.admin")) {
                 try {
                     ConfigLoader.getInstance().load(); // Update data from config.yml
+                    Holograms.getHologramAPI().removeAll();
                     sender.sendMessage(ChatColor.YELLOW + "[TypingInChat] Configuration reloaded");
                     TypingInChat.getInstance().getPluginLogger().info("Configuration reloaded.");
                 } catch (FileNotFoundException e) {
@@ -54,6 +53,7 @@ public class Command implements CommandExecutor, TabExecutor {
         } else {
             try {
                 ConfigLoader.getInstance().load();
+                Holograms.getHologramAPI().removeAll();
                 TypingInChat.getInstance().getPluginLogger().info("Configuration reloaded");
             } catch (IOException | InvalidConfigurationException e) {
                 TypingInChat.getInstance().getPluginLogger().severe("config.yml reading error." + e.getMessage());
