@@ -1,10 +1,13 @@
 package me.orphey.typinginchat;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.util.Vector;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -17,6 +20,9 @@ public class ConfigLoader {
 
     private ConfigLoader() {
     }
+    private static final File file = new File(TypingInChat.getInstance().getDataFolder(), "config.yml");
+    private static final String bukkitVersion = Bukkit.getBukkitVersion().split("-")[0];
+    private static final int bukkitComparison = compareVersions(bukkitVersion, "1.20.5");
     private static final ConfigLoader instance = new ConfigLoader();
     private static final YamlConfiguration config = new YamlConfiguration();
     private static final Map<String, Boolean> booleanParameters = new HashMap<>(Map.ofEntries(
@@ -29,8 +35,12 @@ public class ConfigLoader {
             entry("view-range", 16),
             entry("background-transparency", 50)
     ));
-    private static final List<Double> location = new ArrayList<>(List.of(0.0, 0.35, 0.0));
-    private static final List<Float> translation = new ArrayList<>(List.of(0F, 0.6F, 0.1F));
+    private static final List<Double> locationV19 = new ArrayList<>(List.of(0.0, 1.35, 0.0));
+    private static final List<Float> translationV19 = new ArrayList<>(List.of(0F, 0.72F, 0F));
+    private static final List<Double> locationV20 = new ArrayList<>(List.of(0.0, 1.8, 0.0));
+    private static final List<Float> translationV20 = new ArrayList<>(List.of(0F, 0.275F, 0F));
+    private static final List<Double> location = new ArrayList<>(List.copyOf(locationV19));
+    private static final List<Float> translation = new ArrayList<>(List.copyOf(translationV19));
     private static String typingChar = "✎";
     private static String backgroundColor = "#000000";
     private static String namesColor = "#ffffff";
@@ -80,9 +90,10 @@ public class ConfigLoader {
     }
 
     public void load() throws InvalidConfigurationException, IOException {
-        File file = new File(TypingInChat.getInstance().getDataFolder(), "config.yml");
         if (!file.exists()) {
             createConfig();
+            //If server version is 1.20.5 or higher
+            defaultLocation();
             return;
         }
         try {
@@ -90,6 +101,7 @@ public class ConfigLoader {
         } finally {
             loadOptions();
         }
+
     }
 
     // Data types:
@@ -103,6 +115,55 @@ public class ConfigLoader {
     public static void createConfig() {
         TypingInChat.getInstance().getPluginLogger().warning("Configuration not found. Creating new file with default values.");
         TypingInChat.getInstance().saveResource("config.yml", false);
+    }
+    private static int compareVersions(String version1, String version2) {
+        String[] parts1 = version1.split("\\.");
+        String[] parts2 = version2.split("\\.");
+
+        int maxLength = Math.max(parts1.length, parts2.length);
+        for (int i = 0; i < maxLength; i++) {
+            int num1 = i < parts1.length ? Integer.parseInt(parts1[i]) : 0;
+            int num2 = i < parts2.length ? Integer.parseInt(parts2[i]) : 0;
+
+            if (num1 != num2) {
+                return Integer.compare(num1, num2);
+            }
+        }
+        return 0; // Equal
+    }
+
+    private static void defaultLocation() throws IOException {
+        String header1 = "#Custom value need to be adjusted to offset value.";
+        String header2 = "#Hologram entity position offset, relative to player position.";
+        String key1 = "location";
+        String key2 = "offset";
+        String value1;
+        String value2;
+        if (bukkitComparison >= 0) {
+            location.clear();
+            location.addAll(locationV20);
+            translation.clear();
+            translation.addAll(translationV20);
+            value1 = "[0, 1.8, 0]";
+            value2 = "[0, 0.275, 0]";
+        } else {
+            TypingInChat.getInstance().getPluginLogger().info("Adjusting config values for old version.");
+            value1 = "[0, 1.35, 0]";
+            value2 = "[0, 0.72, 0]";
+        }
+        appendYaml(file, header1, key1, value1);
+        appendYaml(file, header2, key2, value2);
+    }
+
+    private static void appendYaml(File file, String header, String key, String value) throws IOException {
+        // Open the file in append mode
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            // Write a new key-value pair to the end of the file
+            writer.newLine();
+            writer.write(header);
+            writer.newLine();
+            writer.write(key + ": " + value);
+        }
     }
 
     private static void validateBoolean() {
@@ -195,7 +256,7 @@ public class ConfigLoader {
         validateRange("view-range", 1, 20);
         validateRange("background-transparency", 0, 255);
         validateDoubleList("location", location);
-        validateFloatList("transformation", translation);
+        validateFloatList("offset", translation);
         typingChar = validateString("typing-char", typingChar, 12);
         namesColor = validateHexColor("names-color", namesColor);
         typingIconColor = validateHexColor("typing-icon-color", typingIconColor);
