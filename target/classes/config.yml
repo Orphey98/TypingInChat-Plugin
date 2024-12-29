@@ -23,7 +23,3 @@ text-shadow: false
 
 #Changing these values are not recommended
 #Attached hologram spawn location offset, relative to player position.
-#Custom value need to be adjusted to transformation value.
-location: [0, 1.35, 0]
-#Hologram entity position offset, relative to player position.
-transformation: [0, 0.72F, 0]
