@@ -20,7 +20,7 @@ Default colors, player name hidden: [GIF](https://github.com/user-attachments/as
 
 ## Installation
 
-You need to put typinginchat-spigot.jar into server plugins folder. Also, you need to have [packetevents 2.6.0](https://github.com/retrooper/packetevents/releases/tag/v2.6.0) and [HologramAPI 1.4.7](https://github.com/max1mde/HologramAPI/releases/tag/1.4.7) installed.
+You need to put typinginchat-spigot.jar into server plugins folder. Also, you need to have [packetevents 2.6.0](https://github.com/retrooper/packetevents/releases/tag/v2.6.0) and [HologramAPI 1.6.0](https://github.com/max1mde/HologramLib/releases/tag/1.6.0) or newer installed.
 You may change TIC indicators appearance with config.yml. 
 
 ```yaml
