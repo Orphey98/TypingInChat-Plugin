@@ -22,7 +22,7 @@ public class ConfigLoader {
     }
     private static final File file = new File(TypingInChat.getInstance().getDataFolder(), "config.yml");
     private static final String bukkitVersion = Bukkit.getBukkitVersion().split("-")[0];
-    private static final int bukkitComparison = compareVersions(bukkitVersion, "1.20.5");
+    private static final int bukkitComparison = compareVersions(bukkitVersion, "1.20.4");
     private static final ConfigLoader instance = new ConfigLoader();
     private static final YamlConfiguration config = new YamlConfiguration();
     private static final Map<String, Boolean> booleanParameters = new HashMap<>(Map.ofEntries(
