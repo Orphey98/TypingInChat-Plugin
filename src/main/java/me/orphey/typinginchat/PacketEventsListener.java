@@ -30,6 +30,7 @@ public class PacketEventsListener implements PacketListener {
         if (event.getPacketType() == PacketType.Play.Client.PLUGIN_MESSAGE) {
             WrapperPlayClientPluginMessage packet = new WrapperPlayClientPluginMessage(event);
             String channel = packet.getChannelName(); // Get the channel name
+
             if (channel.equals("typinginchatmod:typing_status")) {
                 return packet;
             } else {
@@ -42,11 +43,16 @@ public class PacketEventsListener implements PacketListener {
 
     private byte readPacket(WrapperPlayClientPluginMessage packet) {
         byte[] data = packet.getData();
-        if (data.length == 1) {
+
+        if (data.length == 2) { //Forge
+            return data[1];
+        } else if (data.length == 1) { //Fabric
             return data[0];
         } else {
             return 0;
         }
+
+
     }
 
     private void manageHolo(Player player, byte b) {
