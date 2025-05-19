@@ -22,7 +22,7 @@ public class Holograms {
 
         String[] frames = animationFrame();
         String name = textBuilder(player);
-        TextHologram hologram = new TextHologram(entity.getUniqueId().toString())
+        TextHologram hologram = new TextHologram(player.getUniqueId().toString())
                 .setMiniMessageText(name + frames[0])
                 .setSeeThroughBlocks(ConfigLoader.isVisibleThroughBlocks())
                 .setBillboard(Display.Billboard.CENTER)
@@ -86,7 +86,7 @@ public class Holograms {
         return array;
     }
 
-    public static void remove(Entity player) {
+    public static void remove(Player player) {
         TextHologram hologram = (TextHologram) getHologramAPI().getHologramsMap().get(player.getUniqueId().toString());
         if (hologram != null) {
             getHologramAPI().cancelAnimation(hologram);
