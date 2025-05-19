@@ -56,8 +56,6 @@ public class PacketEventsListener implements PacketListener {
             //System.out.println("Empty");
             return 0;
         }
-
-
     }
 
     private void manageHolo(Player player, byte b) {
