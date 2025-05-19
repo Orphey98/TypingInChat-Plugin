@@ -6,6 +6,8 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
 import org.bukkit.entity.Player;
 
+import static me.orphey.typinginchat.Holograms.handlePassengers;
+
 public class PacketEventsListener implements PacketListener {
 
     @Override
@@ -61,7 +63,11 @@ public class PacketEventsListener implements PacketListener {
     private void manageHolo(Player player, byte b) {
         if (b == 1) {
             if (!Holograms.getHologramAPI().getHologramsMap().containsKey(player.getUniqueId().toString())) {
-                Holograms.create(player);
+                if (!player.getPassengers().isEmpty()) {
+                    handlePassengers(player);
+                } else {
+                    Holograms.create(player, player);
+                }
             }
         } else {
             Holograms.remove(player);

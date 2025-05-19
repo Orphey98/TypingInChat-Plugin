@@ -5,7 +5,9 @@ import com.maximde.hologramlib.hologram.TextHologram;
 import com.maximde.hologramlib.hologram.TextAnimation;
 import org.bukkit.Color;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.util.Vector;
 
 public class Holograms {
@@ -14,13 +16,13 @@ public class Holograms {
     public static HologramManager getHologramAPI() {
         return TypingInChat.getInstance().getHologramManager();
     }
-    public static void create(Player player) {
+    public static void create(Player player, Entity entity) {
         Vector offset = ConfigLoader.getTranslation();
         int[] background = backgroundColor();
 
         String[] frames = animationFrame();
         String name = textBuilder(player);
-        TextHologram hologram = new TextHologram(player.getUniqueId().toString())
+        TextHologram hologram = new TextHologram(entity.getUniqueId().toString())
                 .setMiniMessageText(name + frames[0])
                 .setSeeThroughBlocks(ConfigLoader.isVisibleThroughBlocks())
                 .setBillboard(Display.Billboard.CENTER)
@@ -35,9 +37,18 @@ public class Holograms {
                 .addFrame( name + frames[3])
                 .setSpeed(20 / 2);
 
-        getHologramAPI().spawn(hologram, player.getLocation().add(ConfigLoader.getLocation()));
+        getHologramAPI().spawn(hologram, entity.getLocation().add(ConfigLoader.getLocation()));
         getHologramAPI().applyAnimation(hologram, animation);
-        getHologramAPI().attach(hologram, player.getEntityId());
+        getHologramAPI().attach(hologram, entity.getEntityId());
+    }
+
+    public static void handlePassengers(Player player) {
+        Entity current = player;
+        while (!current.getPassengers().isEmpty()) {
+            current = current.getPassengers().get(0); // Assumes single passenger chain
+        }
+        boolean b = current instanceof TextDisplay;
+        if (!b) create(player, current);
     }
 
     private static String textBuilder(Player player) {
@@ -75,7 +86,7 @@ public class Holograms {
         return array;
     }
 
-    public static void remove(Player player) {
+    public static void remove(Entity player) {
         TextHologram hologram = (TextHologram) getHologramAPI().getHologramsMap().get(player.getUniqueId().toString());
         if (hologram != null) {
             getHologramAPI().cancelAnimation(hologram);
