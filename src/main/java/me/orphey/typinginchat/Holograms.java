@@ -3,6 +3,7 @@ package me.orphey.typinginchat;
 import com.maximde.hologramlib.hologram.HologramManager;
 import com.maximde.hologramlib.hologram.TextHologram;
 import com.maximde.hologramlib.hologram.TextAnimation;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
@@ -32,13 +33,16 @@ public class Holograms {
         String[] frames = animationFrame();
         String name = textBuilder(player);
         TextHologram hologram = new TextHologram(player.getUniqueId().toString())
-                .setMiniMessageText(name + frames[0])
                 .setSeeThroughBlocks(ConfigLoader.isVisibleThroughBlocks())
                 .setBillboard(Display.Billboard.CENTER)
                 .setShadow(ConfigLoader.isTextShadow())
                 .setViewRange(ConfigLoader.getViewRange())
                 .setBackgroundColor(Color.fromARGB(background[0], background[1], background[2], background[3]).asARGB())
                 .setTranslation((float)offset.getX(), (float)offset.getY(), (float)offset.getZ());
+
+        Bukkit.getScheduler().runTaskLater(TypingInChat.getInstance(), () -> {
+            hologram.setMiniMessageText(name + frames[0]);
+        }, 1L);
 
         TextAnimation animation = new TextAnimation()
                 .addFrame( name + frames[1])
