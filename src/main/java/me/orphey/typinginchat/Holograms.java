@@ -5,16 +5,27 @@ import com.maximde.hologramlib.hologram.TextHologram;
 import com.maximde.hologramlib.hologram.TextAnimation;
 import org.bukkit.Color;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.*;
+
 public class Holograms {
     private Holograms() {}
+    private static final Set<UUID> holosActive = new HashSet<>();
+    private static final HashMap<Player, Entity> holosQueue = new HashMap<>();
 
     public static HologramManager getHologramAPI() {
         return TypingInChat.getInstance().getHologramManager();
     }
-    public static void create(Player player) {
+
+    public static void create(Player player, Entity entity) {
+        if (holoExist(player)) {
+            holosQueue.put(player, entity);
+            return;
+        }
+
         Vector offset = ConfigLoader.getTranslation();
         int[] background = backgroundColor();
 
@@ -35,9 +46,18 @@ public class Holograms {
                 .addFrame( name + frames[3])
                 .setSpeed(20 / 2);
 
-        getHologramAPI().spawn(hologram, player.getLocation().add(ConfigLoader.getLocation()));
+        getHologramAPI().spawn(hologram, entity.getLocation().add(ConfigLoader.getLocation()));
         getHologramAPI().applyAnimation(hologram, animation);
-        getHologramAPI().attach(hologram, player.getEntityId());
+        getHologramAPI().attach(hologram, entity.getEntityId());
+        holosActive.add(player.getUniqueId());
+    }
+
+    public static void handlePassengers(Player player) {
+        Entity current = player;
+        while (!current.getPassengers().isEmpty()) {
+            current = current.getPassengers().get(0); // Assumes single passenger chain
+        }
+        create(player, current);
     }
 
     private static String textBuilder(Player player) {
@@ -80,6 +100,41 @@ public class Holograms {
         if (hologram != null) {
             getHologramAPI().cancelAnimation(hologram);
             getHologramAPI().remove(player.getUniqueId().toString());
+            holosActive.remove(player.getUniqueId());
+            holoQueue();
+        }
+    }
+
+    private static boolean holoExist(Player player) {
+        Set<UUID> visited = new HashSet<>();
+        Entity current = player;
+        while (current.getVehicle() != null) {
+            current = current.getVehicle(); // Assumes single vehicle chain
+            if (!visited.add(current.getUniqueId())) break; // Prevent infinite loop
+            if (holosActive.contains(current.getUniqueId())) {
+                return true;
+            }
+        }
+        current = player;
+        while (!current.getPassengers().isEmpty()) {
+            current = current.getPassengers().get(0); // Assumes single passenger chain
+            if (!visited.add(current.getUniqueId())) break; // Prevent infinite loop
+            if (holosActive.contains(current.getUniqueId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void holoQueue() {
+        if (holosQueue.isEmpty()) return;
+        Iterator<Map.Entry<Player, Entity>> iterator = holosQueue.entrySet().iterator();
+        if (iterator.hasNext()) {
+            Map.Entry<Player, Entity> entry = iterator.next();
+            Player player = entry.getKey();
+            Entity target = entry.getValue();
+            create(player, target);
+            iterator.remove();
         }
     }
 }
