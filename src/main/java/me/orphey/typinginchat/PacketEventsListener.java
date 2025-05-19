@@ -61,10 +61,10 @@ public class PacketEventsListener implements PacketListener {
     private void manageHolo(Player player, byte b) {
         if (b == 1) {
             if (!Holograms.getHologramAPI().getHologramsMap().containsKey(player.getUniqueId().toString())) {
-                if (!player.getPassengers().isEmpty()) {
-                    handlePassengers(player);
-                } else {
+                if (player.getPassengers().isEmpty()) {
                     Holograms.create(player, player);
+                } else {
+                    handlePassengers(player);
                 }
             }
         } else {
