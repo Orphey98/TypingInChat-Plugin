@@ -40,6 +40,7 @@ public class Holograms {
                 .setBackgroundColor(Color.fromARGB(background[0], background[1], background[2], background[3]).asARGB())
                 .setTranslation((float)offset.getX(), (float)offset.getY(), (float)offset.getZ());
 
+        // Smooth display in motion
         Bukkit.getScheduler().runTaskLater(TypingInChat.getInstance(), () -> {
             hologram.setMiniMessageText(name + frames[0]);
         }, 1L);
